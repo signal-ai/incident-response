@@ -96,6 +96,7 @@ class SlackClient(object):
                 "conversations.list",
                 exclude_archived=not auto_unarchive,
                 exclude_members=True,
+                types="public_channel,private_channel",
                 limit=800,
                 cursor=next_cursor,
             )
