@@ -66,8 +66,8 @@
 
         {% comment %} ----- Timeline ----- {% endcomment %}
         <h2>Timeline</h2>
-        <div class="timeline">
         {% if incident.timeline_events %}
+            <div class="timeline">
             {% for event in incident.timeline_events.all %}
             <div class="container">
                 <div class="content">
@@ -76,11 +76,13 @@
                 </div>
             </div>
             {% endfor %}
+            </div>
         {% else %}
-        <p>No events in timeline.</p>
-        {% endif %}
+        <div>
+            <p>No events in timeline.</p>
         </div>
-
+        {% endif %}
+    
     </div>
 </div>
 {% endblock %}
