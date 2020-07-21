@@ -13,7 +13,8 @@
 
     <div class="col-lg-12 text-center">
         {% comment %} ----- Heading ----- {% endcomment %}
-        <h1 class="mt-3" id="title"><a href="">Incident {{ incident.report }} ({{ incident.pk }})</a></h1>
+        <h1 class="mt-3" id="title"><a href="">Incident {{ incident.pk }}</a></h1>
+        <p>{{ incident.report }}</p>
         <div id="status"><strong class="{{ incident.status_text }} blink_me">{{ incident.status_text|upper }}</strong>
         {% if incident.severity_text %}- {{ incident.severity_text|upper}} SEVERITY{% endif %}</div>
     </div>
@@ -52,17 +53,21 @@
         {% comment %} ----- Actions ----- {% endcomment %}
         <h2>Actions</h2>
         {% if actions %}
-        <ul>
+        <ul class="actions">
           {% for action in actions.all %}
           <li>{{ action.details|unslackify|markdown_filter|safe }} </li>
           {% endfor %}
         </ul>
+        {% else %}
+        <div class="actions">
+            <p>No actions.</p>
+        </div>
         {% endif %}
 
         {% comment %} ----- Timeline ----- {% endcomment %}
         <h2>Timeline</h2>
-        {% if incident.timeline_events %}
         <div class="timeline">
+        {% if incident.timeline_events %}
             {% for event in incident.timeline_events.all %}
             <div class="container">
                 <div class="content">
@@ -71,8 +76,10 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
+        {% else %}
+        <p>No events in timeline.</p>
         {% endif %}
+        </div>
 
     </div>
 </div>
