@@ -37,7 +37,7 @@ def set_incident_lead(incident: Incident, user_id: str, message: str):
     ["severity", "sev"],
     helptext="Set the incident severity: "
     + ", ".join(
-        ["{} ({}".format(sev_id, sev_name) for sev_id, sev_name in Incident.SEVERITIES]
+        ["{} ({})".format(sev_id, sev_name) for sev_id, sev_name in Incident.SEVERITIES]
     ),
 )
 def set_severity(incident: Incident, user_id: str, message: str):
