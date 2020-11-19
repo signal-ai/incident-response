@@ -29,6 +29,12 @@ class SlackClient(object):
 
     def api_call(self, api_endpoint, *args, **kwargs):
         logger.info(f"Calling Slack API {api_endpoint}")
+
+        max_retry_attempts = kwargs.get("max_retry_attempts", self.max_retry_attempts)
+        retry_base_backoff_seconds = kwargs.get(
+            "retry_base_backoff_seconds", self.retry_base_backoff_seconds
+        )
+
         response = self.client.api_call(api_endpoint, *args, **kwargs)
         if not response.get("ok", False):
             error = response.get("error", "<no error given>")
@@ -40,12 +46,12 @@ class SlackClient(object):
                 # recursively, but there's a danger of overflowing the stack
 
                 # Start index at 1 so we have a multiplier for backoff
-                for i in range(1, self.max_retry_attempts + 1):
+                for i in range(1, max_retry_attempts + 1):
                     try:
                         # Increase backoff with every attempt
-                        backoff_seconds = self.retry_base_backoff_seconds * i
+                        backoff_seconds = retry_base_backoff_seconds * i
                         logging.warning(
-                            f"Retrying request to {api_endpoint} after error {error}. Backing off {backoff_seconds:.2f}s (attempt {i} of {self.max_retry_attempts})"
+                            f"Retrying request to {api_endpoint} after error {error}. Backing off {backoff_seconds:.2f}s (attempt {i} of {max_retry_attempts})"
                         )
 
                         time.sleep(backoff_seconds)
@@ -64,10 +70,18 @@ class SlackClient(object):
 
     def users_list(self):
         logger.info("Listing Slack users")
-        return self.api_call("users.list")
+        return self.api_call(
+            "users.list", max_retry_attempts=30, retry_base_backoff_seconds=2
+        )
 
     def get_paginated_users(self, limit=0, cursor=None):
-        response = self.api_call("users.list", limit=limit, cursor=cursor)
+        response = self.api_call(
+            "users.list",
+            limit=limit,
+            cursor=cursor,
+            max_retry_attempts=30,
+            retry_base_backoff_seconds=2,
+        )
         return response
 
     def get_user_id(self, name):
