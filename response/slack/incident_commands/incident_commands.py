@@ -19,7 +19,9 @@ def send_help_text(incident: Incident, user_id: str, message: str):
     return True, get_help()
 
 
-@__default_incident_command(["lead"], helptext="Assign someone as the incident lead")
+@__default_incident_command(
+    ["lead"], helptext="Assign someone as the incident lead, i.e. @some_user"
+)
 def set_incident_lead(incident: Incident, user_id: str, message: str):
     assignee = reference_to_id(message) or user_id
     name = get_user_profile(assignee)["name"]
@@ -31,7 +33,13 @@ def set_incident_lead(incident: Incident, user_id: str, message: str):
     return True, None
 
 
-@__default_incident_command(["severity", "sev"], helptext="Set the incident severity")
+@__default_incident_command(
+    ["severity", "sev"],
+    helptext="Set the incident severity: "
+    + ", ".join(
+        ["{} ({}".format(sev_id, sev_name) for sev_id, sev_name in Incident.SEVERITIES]
+    ),
+)
 def set_severity(incident: Incident, user_id: str, message: str):
     for sev_id, sev_name in Incident.SEVERITIES:
         # look for sev name (e.g. critical) or sev id (1)
