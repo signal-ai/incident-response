@@ -5,7 +5,7 @@ from response.slack.decorators import recurring_notification
 from response.slack.models import CommsChannel
 
 
-@recurring_notification(interval_mins=5, max_notifications=5)
+@recurring_notification(interval_mins=5, max_notifications=4)
 def remind_severity(incident: Incident):
     try:
         comms_channel = CommsChannel.objects.get(incident=incident)
@@ -17,7 +17,7 @@ def remind_severity(incident: Incident):
         pass
 
 
-@recurring_notification(interval_mins=2, max_notifications=5)
+@recurring_notification(interval_mins=5, max_notifications=4)
 def remind_incident_lead(incident: Incident):
     try:
         comms_channel = CommsChannel.objects.get(incident=incident)
