@@ -20,8 +20,8 @@
         {% for incident in incidents %}
         <li>
           {{ incident.severity_emoji }}
-          <a href="https://signalhq.slack.com/archives/{{ incident.comms_channel.channel_id }}" target="_blank">🗣&nbsp;</a>
-          <a href="{% url 'incident_doc' incident.pk %}" target="_blank">📄&nbsp;</a>
+          <a href="https://signalhq.slack.com/archives/{{ incident.comms_channel.channel_id }}" target="_blank">{{ incident.comms_channel.channel_name }}&nbsp;</a>
+          <a href="{% url 'incident_doc' incident.pk %}" target="_blank">Incident {{ incident.pk }}&nbsp;</a>
           <span class="badge {{ incident.badge_type }} blink_me">{{ incident.status_text|upper }}</span>
           - {{ incident.report }}
         </li>
