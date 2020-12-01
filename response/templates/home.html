@@ -20,6 +20,8 @@
         {% for incident in incidents %}
         <li>
           {{ incident.severity_emoji }}
+          <a href="{}" target="_blank">:speaking_head_in_silhouette:</a>
+          {{ incident.comms_channel }}
           <a href="{% url 'incident_doc' incident.pk %}" target="_blank">Incident {{ incident.pk }}&nbsp;</a>
           <span class="badge {{ incident.badge_type }} blink_me">{{ incident.status_text|upper }}</span>
           - {{ incident.report }}
