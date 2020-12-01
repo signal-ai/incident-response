@@ -14,7 +14,7 @@
     <div class="col-lg-12 text-center">
         {% comment %} ----- Heading ----- {% endcomment %}
         <h1 class="mt-3" id="title"><a href="">Incident {{ incident.pk }}</a></h1>
-        <a href="https://signalhq.slack.com/archives/{{ incident.comms_channel.channel_id }}" target="_blank">{{ incident.comms_channel.channel_name }}&nbsp;</a>
+        <a href="https://signalhq.slack.com/archives/{{ incident.comms_channel.channel_id }}" target="_blank">Slack Channel: #{{ incident.comms_channel.channel_name }}&nbsp;</a>
         <p>{{ incident.report }}</p>
         <div id="status"><strong class="{{ incident.status_text }} blink_me">{{ incident.status_text|upper }}</strong>
         {% if incident.severity_text %}- {{ incident.severity_text|upper}} SEVERITY{% endif %}</div>
